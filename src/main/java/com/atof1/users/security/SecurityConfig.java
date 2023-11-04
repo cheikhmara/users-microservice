@@ -39,8 +39,10 @@ public class SecurityConfig {
 			.sessionCreationPolicy(SessionCreationPolicy.STATELESS).and()
 			.authorizeHttpRequests()
 			.requestMatchers("/login").permitAll()
+			.requestMatchers("/all").hasAuthority("ADMIN")
 			.anyRequest().authenticated().and()
-			.addFilterBefore(new JWTAuthenticationFilter(authMgr),UsernamePasswordAuthenticationFilter.class);
+			.addFilterBefore(new JWTAuthenticationFilter(authMgr),UsernamePasswordAuthenticationFilter.class)
+			.addFilterBefore(new JWTAuthorizationFilter(), UsernamePasswordAuthenticationFilter.class);
 			
 		return http.build();
 	}
